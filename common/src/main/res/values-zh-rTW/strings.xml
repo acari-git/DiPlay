@@ -924,4 +924,12 @@
     <string name="settings_write_settings_allow">允許權限</string>
     <string name="settings_wifi_direct_scan_pause">CarPlay 期間暫停車機 Wi-Fi 搜尋 · 需要 ADB</string>
     <string name="settings_wifi_direct_scan_pause_description">Wi-Fi Direct 時，車機每隔幾秒搜尋一次 Wi-Fi 網路，每次搜尋都會讓音樂和畫面卡頓。開啟後，CarPlay 執行期間 DiPlay 會暫停這個搜尋。這段期間車機也不會自動連線已知網路（例如手機熱點），可以在車機 Wi-Fi 設定裡手動連線；CarPlay 結束後恢復。關閉後車機可以自動連線。下次連線時生效。</string>
+    <string name="settings_connection_log_check">檢查最近的連線問題</string>
+    <string name="settings_connection_log_checking">正在檢查連線記錄…</string>
+    <string name="settings_connection_log_explainer">根據此裝置最近的記錄顯示可能原因，並非確定診斷。不會上傳任何資料。</string>
+    <string name="settings_connection_log_no_evidence">目前記錄中未發現已知連線錯誤。這不代表連線一定正常。請重現問題並儲存診斷報告。</string>
+    <string name="settings_connection_log_unreadable">無法讀取連線記錄。請改為儲存診斷報告。</string>
+    <string name="settings_connection_log_usb">可能發生 USB 傳輸錯誤</string>
+    <string name="settings_connection_log_bluetooth">可能發生藍牙連線錯誤</string>
+    <string name="settings_connection_log_timeout">可能發生無線連線逾時</string>
 </resources>

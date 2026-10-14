@@ -192,6 +192,7 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var initialLaunch = true
     private var notificationTransport = true
     private var exportInProgress = false
+    private var connectionLogCheckInProgress = false
     private var usbPermissionOperation: UsbPermissionSetup.Operation? = null
     private var usbPermissionDialog: AlertDialog? = null
     internal var usbPermissionOperationFactory: (Context) -> UsbPermissionSetup.Operation = {
@@ -202,6 +203,7 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var testToneTrack: AudioTrack? = null
     private var toneStop: Runnable? = null
     private var exportButton: Button? = null
+    private var connectionLogButton: Button? = null
     private var rootScroll: ScrollView? = null
     private var settingsRailScroll: ScrollView? = null
     private var reconnectBar: View? = null
@@ -665,6 +667,7 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
         reconnectBar = null
         readinessCard = null
         exportButton = null
+        connectionLogButton = null
         bydAdbControls = null
         adbSwitches.clear()
         adbStatus = null
@@ -1738,6 +1741,12 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
         }
         filteredSection(content, SettingsSection.DIAGNOSTICS,
             getString(R.string.diagnostics), R.drawable.ic_dp_diagnostics) { card ->
+            connectionLogButton = button(
+                getString(if (connectionLogCheckInProgress) R.string.settings_connection_log_checking
+                    else R.string.settings_connection_log_check), false,
+            ) { checkRecentConnectionLog() }.apply { isEnabled = !connectionLogCheckInProgress }
+            card.addView(connectionLogButton, matchButton(10, 60))
+            card.addView(label(getString(R.string.settings_connection_log_explainer), 14, MUTED))
             exportButton = button(if (exportInProgress) getString(R.string.saving_report) else getString(R.string.save_diagnostic_report), false) {
                 saveReportToDownloads()
             }.apply { isEnabled = !exportInProgress }
@@ -5436,6 +5445,53 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
 
     private fun reportFileName() = "DiPlay-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.txt"
+
+    /** Read only the active session's bounded, redacted log; never block the Settings UI. */
+    private fun checkRecentConnectionLog() {
+        if (connectionLogCheckInProgress) return
+        connectionLogCheckInProgress = true
+        connectionLogButton?.apply {
+            isEnabled = false
+            text = getString(R.string.settings_connection_log_checking)
+        }
+        val appContext = applicationContext
+        Thread({
+            val result = runCatching {
+                val file = File(appContext.filesDir, "logs/diplay.log")
+                if (!file.isFile) emptyList()
+                else file.useLines { lines -> ConnectionLogTriage.analyze(lines) }
+            }
+            runOnUiThread {
+                connectionLogCheckInProgress = false
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                connectionLogButton?.apply {
+                    isEnabled = true
+                    text = getString(R.string.settings_connection_log_check)
+                }
+                val message = result.fold(
+                    onSuccess = { symptoms ->
+                        if (symptoms.isEmpty()) getString(R.string.settings_connection_log_no_evidence)
+                        else symptoms.joinToString("\n\n") { symptom ->
+                            val (labelId, helpId) = when (symptom) {
+                                ConnectionLogTriage.Symptom.USB_TRANSPORT ->
+                                    R.string.settings_connection_log_usb to R.string.connection_help_usb
+                                ConnectionLogTriage.Symptom.BLUETOOTH ->
+                                    R.string.settings_connection_log_bluetooth to R.string.connection_help_bluetooth
+                                ConnectionLogTriage.Symptom.WIRELESS_TIMEOUT ->
+                                    R.string.settings_connection_log_timeout to R.string.connection_help_general
+                            }
+                            getString(labelId) + "\n" + getString(helpId)
+                        }
+                    },
+                    onFailure = { getString(R.string.settings_connection_log_unreadable) },
+                )
+                appDialogBuilder().setTitle(getString(R.string.settings_connection_log_check))
+                    .setMessage(message + "\n\n" + getString(R.string.settings_connection_log_explainer))
+                    .setPositiveButton(getString(R.string.save_diagnostic_report)) { _, _ -> saveReportToDownloads() }
+                    .setNegativeButton(getString(R.string.close), null).show()
+            }
+        }, "diplay-connection-log-check").start()
+    }
 
     private fun saveReportToDownloads() {
         if (exportInProgress) return

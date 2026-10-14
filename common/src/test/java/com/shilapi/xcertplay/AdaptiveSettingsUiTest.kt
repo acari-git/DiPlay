@@ -705,12 +705,15 @@ class AdaptiveSettingsUiTest {
         val vehicle = visibleIn(R.string.settings_vehicle)
         val advanced = visibleIn(R.string.settings_advanced)
         val connection = visibleIn(R.string.connection)
+        val diagnostics = visibleIn(R.string.diagnostics)
 
         assertTrue(display.any { it.startsWith(text(R.string.carplay_dock)) })
         assertFalse(vehicle.any { it.startsWith(text(R.string.carplay_dock)) })
 
         assertTrue(connection.any { it.startsWith(text(R.string.settings_usb_charging)) })
         assertFalse(advanced.any { it.startsWith(text(R.string.settings_usb_charging)) })
+        assertTrue(diagnostics.any { it.startsWith(text(R.string.settings_connection_log_check)) })
+        assertFalse(connection.any { it.startsWith(text(R.string.settings_connection_log_check)) })
         assertTrue(audio.any { it.startsWith(text(R.string.settings_navigation_attenuation)) })
         assertFalse(advanced.any { it.startsWith(text(R.string.settings_navigation_attenuation)) })
         assertTrue(audio.any { it.startsWith(text(R.string.settings_music_buffer_wireless)) })
@@ -773,6 +776,39 @@ class AdaptiveSettingsUiTest {
 
     @Test @Config(sdk = [29], qualifiers = "ja-w320dp-h600dp")
     fun navigationSliderScreenshotCompactJapaneseLargeFont() = captureNavigationSlider("compact-ja", 1.3f)
+
+    @Test @Config(sdk = [29], qualifiers = "ja-w320dp-h600dp")
+    fun connectionTriageScreenshotCompactJapaneseLargeFont() = captureConnectionTriage("compact-ja")
+
+    @Test @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp")
+    fun connectionTriageScreenshotExpandedEnglishLargeFont() = captureConnectionTriage("expanded-en")
+
+    @Test @Config(sdk = [29], qualifiers = "ar-ldrtl-w320dp-h600dp")
+    fun connectionTriageScreenshotCompactArabicRtlLargeFont() = captureConnectionTriage("compact-ar-rtl")
+
+    private fun captureConnectionTriage(name: String) {
+        RuntimeEnvironment.setFontScale(1.3f)
+        val screen = openSettings()
+        ReflectionHelpers.setField(screen, "settingsCategory", SettingsCategory.DIAGNOSTICS)
+        ReflectionHelpers.callInstanceMethod<Unit>(screen, "render")
+        layoutRoot(screen)
+        val checkButton = texts(screen).single { it.text == screen.getString(R.string.settings_connection_log_check) }
+        val visible = Rect()
+        assertTrue("Connection log check must be visible", checkButton.getGlobalVisibleRect(visible))
+        assertTrue(visible.height() >= checkButton.height / 2)
+        val root = screen.findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+        val bitmap = Bitmap.createBitmap(root.width, root.height, Bitmap.Config.ARGB_8888)
+        try {
+            root.draw(Canvas(bitmap))
+            val output = Paths.get("build/reports/connection-triage-ui/$name.png")
+            Files.createDirectories(output.parent)
+            Files.newOutputStream(output).use { stream ->
+                assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream))
+            }
+        } finally {
+            bitmap.recycle()
+        }
+    }
 
     @Test @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp")
     fun navigationSliderScreenshotExpandedLargeFont() = captureNavigationSlider("expanded-en", 1.3f)

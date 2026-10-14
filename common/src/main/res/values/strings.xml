@@ -967,4 +967,12 @@
     <string name="settings_write_settings_allow">Allow access</string>
     <string name="settings_wifi_direct_scan_pause">Pause the car\'s Wi-Fi search during CarPlay · needs ADB</string>
     <string name="settings_wifi_direct_scan_pause_description">Over Wi-Fi Direct the car searches for Wi-Fi networks every few seconds, and each search makes music and video stutter. With this on, DiPlay pauses the search while CarPlay runs. The car then also does not join a known network, such as your phone\'s hotspot, by itself until CarPlay ends; you can still join one in the car\'s Wi-Fi settings. Turn it off to let the car join automatically. Applies at the next connection.</string>
+    <string name="settings_connection_log_check">Check recent connection problems</string>
+    <string name="settings_connection_log_checking">Checking connection log…</string>
+    <string name="settings_connection_log_explainer">Shows possible causes from this device’s recent log, not a confirmed diagnosis. No data is uploaded.</string>
+    <string name="settings_connection_log_no_evidence">No recognized connection failure was found in the current log. This does not prove the connection works. Reproduce the problem and save a diagnostic report.</string>
+    <string name="settings_connection_log_unreadable">The connection log could not be read. Save a diagnostic report instead.</string>
+    <string name="settings_connection_log_usb">Possible USB transport failure</string>
+    <string name="settings_connection_log_bluetooth">Possible Bluetooth connection failure</string>
+    <string name="settings_connection_log_timeout">Possible wireless connection timeout</string>
 </resources>

@@ -864,4 +864,12 @@
     <string name="settings_write_settings_allow">Разрешить доступ</string>
     <string name="settings_wifi_direct_scan_pause">Приостановить поиск Wi-Fi автомобилем при CarPlay · нужен ADB</string>
     <string name="settings_wifi_direct_scan_pause_description">В режиме Wi-Fi Direct автомобиль ищет сети Wi-Fi каждые несколько секунд, и каждый поиск прерывает музыку и видео. Когда параметр включён, DiPlay приостанавливает поиск, пока работает CarPlay. Тогда автомобиль и сам не подключается к известной сети, например к точке доступа телефона, пока CarPlay не завершится; подключиться можно вручную в настройках Wi-Fi автомобиля. Выключите, чтобы автомобиль подключался сам. Применяется при следующем подключении.</string>
+    <string name="settings_connection_log_check">Проверить недавние проблемы подключения</string>
+    <string name="settings_connection_log_checking">Проверка журнала подключения…</string>
+    <string name="settings_connection_log_explainer">Показывает возможные причины по недавнему журналу устройства, но не подтверждённый диагноз. Данные не отправляются.</string>
+    <string name="settings_connection_log_no_evidence">В текущем журнале не найдены известные ошибки подключения. Это не доказывает, что подключение работает. Повторите проблему и сохраните диагностический отчёт.</string>
+    <string name="settings_connection_log_unreadable">Не удалось прочитать журнал подключения. Вместо этого сохраните диагностический отчёт.</string>
+    <string name="settings_connection_log_usb">Возможная ошибка передачи по USB</string>
+    <string name="settings_connection_log_bluetooth">Возможная ошибка подключения Bluetooth</string>
+    <string name="settings_connection_log_timeout">Возможный тайм-аут беспроводного подключения</string>
 </resources>

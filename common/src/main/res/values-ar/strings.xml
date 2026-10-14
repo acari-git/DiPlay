@@ -913,4 +913,12 @@
     <string name="settings_write_settings_allow">السماح بالإذن</string>
     <string name="settings_wifi_direct_scan_pause">إيقاف بحث السيارة عن Wi-Fi أثناء CarPlay · يتطلب ADB</string>
     <string name="settings_wifi_direct_scan_pause_description">مع Wi-Fi Direct تبحث السيارة عن شبكات Wi-Fi كل بضع ثوانٍ، وكل بحث يجعل الموسيقى والفيديو يتقطعان. عند تشغيل هذا الخيار يوقف DiPlay البحث أثناء تشغيل CarPlay. عندها لا تتصل السيارة تلقائيًا بشبكة معروفة، مثل نقطة اتصال هاتفك، حتى ينتهي CarPlay؛ ويمكنك الاتصال بها يدويًا من إعدادات Wi-Fi في السيارة. أوقفه لتتصل السيارة تلقائيًا. يُطبَّق عند الاتصال التالي.</string>
+    <string name="settings_connection_log_check">فحص مشكلات الاتصال الأخيرة</string>
+    <string name="settings_connection_log_checking">جارٍ فحص سجل الاتصال…</string>
+    <string name="settings_connection_log_explainer">يعرض أسبابًا محتملة من السجل الأخير لهذا الجهاز، وليس تشخيصًا مؤكدًا. لا تُرسل أي بيانات.</string>
+    <string name="settings_connection_log_no_evidence">لم يُعثر على فشل اتصال معروف في السجل الحالي. هذا لا يثبت أن الاتصال يعمل. أعد إظهار المشكلة واحفظ تقرير التشخيص.</string>
+    <string name="settings_connection_log_unreadable">تعذرت قراءة سجل الاتصال. احفظ تقرير التشخيص بدلًا من ذلك.</string>
+    <string name="settings_connection_log_usb">احتمال فشل نقل البيانات عبر USB</string>
+    <string name="settings_connection_log_bluetooth">احتمال فشل اتصال Bluetooth</string>
+    <string name="settings_connection_log_timeout">احتمال انتهاء مهلة الاتصال اللاسلكي</string>
 </resources>
